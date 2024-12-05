@@ -1,6 +1,8 @@
 package com.axon.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class ExerciseController {
 	}
 	
 	@DeleteMapping("/{id_routine}/{id_exercise}")
-    public ResponseEntity<String> deleteExerciseByRoutineId(
+    public ResponseEntity<Map<String, String>> deleteExerciseByRoutineId(
     		@PathVariable("id_routine") Long id_routine, 
     		@PathVariable("id_exercise") Long id_exercise) {
     	
@@ -47,17 +49,21 @@ public class ExerciseController {
 			RoutineExercise routineExercise = routineExerciseRepository.findByRoutine_IdAndExercise_Id(id_routine, id_exercise);
 			
 			if (routineExercise == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                    .body("RoutineExercise not found for the given routine and exercise IDs.");
+	            Map<String, String> errorResponse = new HashMap<>();
+	            errorResponse.put("error", "RoutineExercise not found for the given routine and exercise IDs.");
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 	        }
 			
 			routineExerciseRepository.delete(routineExercise);
 			
-			return ResponseEntity.ok("Exercise removed from routine successfully.");
+			Map<String, String> successResponse = new HashMap<>();
+	        successResponse.put("message", "Exercise removed from routine successfully.");
+	        return ResponseEntity.ok(successResponse);
 			
 		} catch (Exception e) {
-			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-		                .body("Error occurred while removing exercise from routine.");
+			Map<String, String> errorResponse = new HashMap<>();
+	        errorResponse.put("error", "Error occurred while removing exercise from routine.");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 		}
     }
 	

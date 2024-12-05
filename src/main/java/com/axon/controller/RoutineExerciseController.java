@@ -1,5 +1,6 @@
 package com.axon.controller;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -48,19 +49,17 @@ public class RoutineExerciseController {
     @GetMapping("/{id}")
     public ResponseEntity<List<Map<String, Object>>> findExercisesByRoutineId(@PathVariable("id") Long id_routine) {
         List<RoutineExercise> routineExercises = routineExercisesRepository.findByRoutine_Id(id_routine);
-
+        
         if (routineExercises.isEmpty()) {
-            System.out.println("No exercises found for routine ID: " + id_routine); // Debugging
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            System.out.println("No exercises found for routine ID: " + id_routine);
+            return ResponseEntity.ok(Collections.emptyList()); // Return an empty list with 200 status
         }
-
-        System.out.println("Found exercises: " + routineExercises.size()); // Debugging
 
         List<Map<String, Object>> responseList = routineExercises.stream()
                 .sorted(Comparator.comparingInt(RoutineExercise::getSequence_order))
                 .map(routineExercise -> {
                     Map<String, Object> exerciseData = new HashMap<>();
-                    exerciseData.put("exercise", routineExercise.getExercise()); // Verify if this is serializable
+                    exerciseData.put("exercise", routineExercise.getExercise());
                     exerciseData.put("sequenceOrder", routineExercise.getSequence_order());
                     return exerciseData;
                 })
@@ -71,7 +70,11 @@ public class RoutineExerciseController {
     
     @PostMapping("/{routineId}/{exerciseId}/{sequenceOrder}")
     public ResponseEntity<?> addExerciseToRoutine(@PathVariable Long routineId, @PathVariable Long exerciseId,  @PathVariable Integer sequenceOrder) {
-    	
+        
+        
+        System.out.println("Request received: routineId=" + routineId 
+                + ", exerciseId=" + exerciseId + ", sequenceOrder=" + sequenceOrder);
+        
         try {
         	RoutineExerciseKey key = new RoutineExerciseKey(routineId, exerciseId);
         	
