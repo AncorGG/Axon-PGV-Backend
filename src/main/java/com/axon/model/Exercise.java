@@ -11,7 +11,6 @@ public class Exercise {
 	@Column(name = "id_exercise")
     private Long id;
     
-	
     @Column(name = "exercise_name")
     private String exercise_name;
     

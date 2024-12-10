@@ -11,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,7 +50,7 @@ public class RoutineExerciseController {
         
         if (routineExercises.isEmpty()) {
             System.out.println("No exercises found for routine ID: " + id_routine);
-            return ResponseEntity.ok(Collections.emptyList()); // Return an empty list with 200 status
+            return ResponseEntity.ok(Collections.emptyList());
         }
 
         List<Map<String, Object>> responseList = routineExercises.stream()
@@ -69,11 +67,8 @@ public class RoutineExerciseController {
     }
     
     @PostMapping("/{routineId}/{exerciseId}/{sequenceOrder}")
-    public ResponseEntity<?> addExerciseToRoutine(@PathVariable Long routineId, @PathVariable Long exerciseId,  @PathVariable Integer sequenceOrder) {
-        
-        
-        System.out.println("Request received: routineId=" + routineId 
-                + ", exerciseId=" + exerciseId + ", sequenceOrder=" + sequenceOrder);
+    public ResponseEntity<?> addExerciseToRoutine(@PathVariable Long routineId, 
+    		@PathVariable Long exerciseId,  @PathVariable Integer sequenceOrder) {
         
         try {
         	RoutineExerciseKey key = new RoutineExerciseKey(routineId, exerciseId);
@@ -88,10 +83,8 @@ public class RoutineExerciseController {
             routineExercise.setExercise(exercise);
             routineExercise.setSequence_order(sequenceOrder);
             
-            // Save the created RoutineExercise to the repository
             RoutineExercise createdRoutineExercise = routineExercisesRepository.save(routineExercise);
 
-            // Return a response indicating the creation of the resource
             return ResponseEntity.status(HttpStatus.CREATED).body(createdRoutineExercise);
             
         } catch(Exception e) {

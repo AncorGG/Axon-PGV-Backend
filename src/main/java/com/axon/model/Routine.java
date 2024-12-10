@@ -1,7 +1,6 @@
 package com.axon.model;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
