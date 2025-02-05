@@ -1,5 +1,8 @@
 package com.axon.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,11 +15,13 @@ public class RoutineExercise {
 	@ManyToOne
     @MapsId("idRoutine")
     @JoinColumn(name = "id_routine")
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Routine routine;
 	
 	@ManyToOne
 	@MapsId("idExercise")
 	@JoinColumn(name = "id_exercise")
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Exercise exercise;
 	
 	@Column(name = "sequence_order")

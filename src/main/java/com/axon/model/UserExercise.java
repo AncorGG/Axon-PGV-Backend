@@ -2,6 +2,9 @@ package com.axon.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -20,11 +23,13 @@ public class UserExercise {
 	@ManyToOne
 	@MapsId("idUser")
 	@JoinColumn(name = "id_user")
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	private User user;
 	
 	@ManyToOne
 	@MapsId("idExercise")
 	@JoinColumn(name = "id_exercise")
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Exercise exercise;
 	
 	@Column(name = "completition_date")

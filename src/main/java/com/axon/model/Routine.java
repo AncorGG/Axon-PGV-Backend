@@ -4,6 +4,8 @@ package com.axon.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,9 +31,10 @@ public class Routine {
 	@CreationTimestamp
 	private LocalDateTime creation_date;
 	
-	@Column(name = "id_user")
-	private Integer id_user;
-	
+	@ManyToOne
+	@JoinColumn(name = "id_user")
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	private User user;
 	
 	public Routine() {}
 
@@ -76,15 +79,14 @@ public class Routine {
 	}
 
 
-	public Integer getId_user() {
-		return id_user;
+	public User getUser() {
+		return user;
 	}
 
 
-	public void setId_user(Integer id_user) {
-		this.id_user = id_user;
+	public void setUser(User user) {
+		this.user = user;
 	}
-
 	
 	
 }

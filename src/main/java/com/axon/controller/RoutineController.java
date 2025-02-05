@@ -28,6 +28,11 @@ public class RoutineController {
 		return routineRepository.findById(id).get();
 	}
 	
+	@GetMapping("/user/{userId}")
+	public List<Routine> getRoutinesByUserId(@PathVariable("userId") Integer userId) {
+	    return routineRepository.findByUserId(userId);
+	}
+
 	@PostMapping
 	public ResponseEntity<Routine> insertRoutine(@RequestBody Routine routine) {
 		Routine createdRoutine = routineRepository.save(routine);
@@ -40,7 +45,7 @@ public class RoutineController {
 	            .map(routine -> {
 	                routine.setRoutine_name(newRoutine.getRoutine_name());
 	                routine.setDescription(newRoutine.getDescription());
-	                routine.setId_user(newRoutine.getId_user());
+	                routine.setUser(newRoutine.getUser());
 	                routineRepository.save(routine);
 	                return ResponseEntity.ok(routine);
 	            })

@@ -26,13 +26,19 @@ public class UserController {
 	private UserRepository userRepository;
 
 	@GetMapping
-	public List<User> getExercises() {
+	public List<User> getUsers() {
 		return userRepository.findAll();
 	}
 
-	@GetMapping("/{id}")
-	public User getExerciseById(@PathVariable("id") Long id) {
-		return userRepository.findById(id).get();
+	@GetMapping("/{username}")
+	public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
+	    Optional<User> user = userRepository.findByUsername(username);
+	    
+	    if (user.isPresent()) {
+	        return ResponseEntity.ok(user.get());
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 	
 	@PutMapping("/{id}")
