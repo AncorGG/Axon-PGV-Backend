@@ -14,7 +14,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.axon.repository.UserRepository;
-import com.axon.security.JWTAuthorizationFilter;
 
 @Configuration
 public class SecurityConfig {

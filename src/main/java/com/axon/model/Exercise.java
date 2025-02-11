@@ -24,6 +24,15 @@ public class Exercise {
     private Integer experience;
 
     public Exercise() {}
+    
+	public Exercise(Long id, String exercise_name, Integer difficulty, Float speed, Integer experience) {
+		super();
+		this.id = id;
+		this.exercise_name = exercise_name;
+		this.difficulty = difficulty;
+		this.speed = speed;
+		this.experience = experience;
+	}
 
     public Long getId_exercise() {
         return id;
@@ -64,4 +73,7 @@ public class Exercise {
     public void setExperience(Integer experience) {
         this.experience = experience;
     }
+
+
+    
 }

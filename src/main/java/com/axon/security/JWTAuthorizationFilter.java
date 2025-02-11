@@ -69,17 +69,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 	    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 	    response.setContentType("application/json");
                 	    response.getWriter().write("{\"error\": \"Invalid JWT\"}");
-                	    //response.getWriter().write("Invalid JWT: " + e.getMessage());
                 	    return;
                 	}  
                 }
             }
         }
-
-        /*
-        SecurityContextHolder.clearContext();
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Invalid or missing token.");*/
         SecurityContextHolder.clearContext();
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
