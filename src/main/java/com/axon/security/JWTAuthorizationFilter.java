@@ -60,16 +60,26 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                     chain.doFilter(request, response);
                     return;
                 } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().write("Invalid JWT: " + e.getMessage());
-                    return;
+                	if (e instanceof ExpiredJwtException) {
+                		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                		response.setContentType("aplication/json");
+                        response.getWriter().write("{\"error\": \"Token expired\"}");
+                        return;
+                	} else {
+                		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                		response.setContentType("aplication/json");
+                        response.getWriter().write("{\"error\": \"Invalid JWT\"}");
+                        return;
+                	}
                 }
             }
         }
 
         SecurityContextHolder.clearContext();
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Invalid or missing token.");
+		response.setContentType("aplication/json");
+        response.getWriter().write("{\"error\": \"Invalid or missing Token\"}");
+        return;
     }
 
     private Claims validateToken(String token) {
