@@ -38,6 +38,14 @@ public class Routine {
 	
 	public Routine() {}
 
+	public Routine(Long id, String routine_name, String routine_description, LocalDateTime creation_date, User user) {
+		super();
+		this.id = id;
+		this.routine_name = routine_name;
+		this.routine_description = routine_description;
+		this.creation_date = creation_date;
+		this.user = user;
+	}
 
 	public Long getId_routine() {
 		return id;

@@ -25,11 +25,11 @@ public class Exercise {
 
     public Exercise() {}
 
-    public Long getId() {
+    public Long getId_exercise() {
         return id;
     }
 
-    public void setId(Long id_exercise) {
+    public void setId_exercise(Long id_exercise) {
         this.id = id_exercise;
     }
 
