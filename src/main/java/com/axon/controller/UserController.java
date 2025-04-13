@@ -1,6 +1,7 @@
 package com.axon.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.axon.model.User;
@@ -42,20 +44,48 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User userDetails){
-		Optional<User> optionalUser = userRepository.findById(id);
-		
-		if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setUsername(userDetails.getUsername());
-            user.setEmail(userDetails.getEmail());
-            user.setLevel(userDetails.getLevel());
-            user.setExperience(userDetails.getExperience());
-            userRepository.save(user);
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+	public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User userDetails) {
+	    Optional<User> optionalUser = userRepository.findById(id);
+
+	    if (optionalUser.isPresent()) {
+	        User user = optionalUser.get();
+
+	        // Actualizás los campos necesarios
+	        user.setUsername(userDetails.getUsername());
+	        user.setEmail(userDetails.getEmail());
+	        user.setExperience(userDetails.getExperience());
+	        user.setLevel(userDetails.getLevel());
+	        // Agregá más campos si los tenés...
+
+	        userRepository.save(user);
+	        return ResponseEntity.ok(user);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
+	@PutMapping("/{id}/exp")
+	public ResponseEntity<User> addExperience(@PathVariable("id") Long id, @RequestBody User userDetails) {
+	    Optional<User> optionalUser = userRepository.findById(id);
+
+	    if (optionalUser.isPresent()) {
+	        User user = optionalUser.get();
+
+	        int newExperience = user.getExperience() + userDetails.getExperience();
+	        int requiredExp = (user.getLevel() + 1) * 100;
+
+	        while (newExperience >= requiredExp) {
+	            newExperience -= requiredExp;
+	            user.setLevel(user.getLevel() + 1);
+	            requiredExp = (user.getLevel() + 1) * 100;
+	        }
+
+	        user.setExperience(newExperience);
+	        userRepository.save(user);
+	        return ResponseEntity.ok(user);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 	
 	@DeleteMapping("/{id}")
